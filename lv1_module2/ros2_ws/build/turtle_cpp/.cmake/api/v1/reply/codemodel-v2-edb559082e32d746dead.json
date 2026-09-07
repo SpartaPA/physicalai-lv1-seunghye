@@ -1,0 +1,88 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-6c6fc116e03a7aa1ed10.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"name" : "",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "turtle_cpp",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "turtle_cpp_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-turtle_cpp_uninstall-008516c9ea12943c3248.json",
+					"name" : "turtle_cpp_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "turtle_distance_publisher::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-turtle_distance_publisher-7539ae6b624abdaac327.json",
+					"name" : "turtle_distance_publisher",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "turtle_distance_subscriber::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-turtle_distance_subscriber-3ef52bcef3abc650ddb4.json",
+					"name" : "turtle_distance_subscriber",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-87393c3854557c82bb1b.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/build/turtle_cpp",
+		"source" : "/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/src/turtle_cpp"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

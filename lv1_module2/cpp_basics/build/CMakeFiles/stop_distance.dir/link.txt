@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/stop_distance.dir/stop_distance.cpp.o -o stop_distance 

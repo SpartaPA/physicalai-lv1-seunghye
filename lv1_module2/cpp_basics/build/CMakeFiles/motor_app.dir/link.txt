@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/motor_app.dir/main.cpp.o CMakeFiles/motor_app.dir/motor.cpp.o -o motor_app 

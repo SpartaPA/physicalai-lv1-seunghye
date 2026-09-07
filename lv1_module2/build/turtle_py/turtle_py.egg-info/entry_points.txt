@@ -1,0 +1,5 @@
+[console_scripts]
+distance_pub = turtle_py.distance_publisher:main
+distance_sub = turtle_py.distance_monitor:main
+square_driver = turtle_py.square_driver:main
+

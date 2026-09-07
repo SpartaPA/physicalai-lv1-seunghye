@@ -1,0 +1,19 @@
+running develop
+running egg_info
+writing turtle_py.egg-info/PKG-INFO
+writing dependency_links to turtle_py.egg-info/dependency_links.txt
+writing entry points to turtle_py.egg-info/entry_points.txt
+writing requirements to turtle_py.egg-info/requires.txt
+writing top-level names to turtle_py.egg-info/top_level.txt
+reading manifest file 'turtle_py.egg-info/SOURCES.txt'
+writing manifest file 'turtle_py.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/lib/python3.10/site-packages/turtle-py.egg-link (link to .)
+Installing distance_pub script to /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/lib/turtle_py
+Installing distance_sub script to /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/lib/turtle_py
+Installing square_driver script to /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/lib/turtle_py
+
+Installed /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/build/turtle_py
+running symlink_data
+symbolically linking /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/build/turtle_py/resource/turtle_py -> /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/share/ament_index/resource_index/packages
+symbolically linking /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/build/turtle_py/package.xml -> /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/share/turtle_py

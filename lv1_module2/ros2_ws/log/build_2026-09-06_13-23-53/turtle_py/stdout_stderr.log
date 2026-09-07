@@ -1,0 +1,36 @@
+running develop
+Removing /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/lib/python3.10/site-packages/turtle-py.egg-link (link to .)
+running egg_info
+writing ../../build/turtle_py/turtle_py.egg-info/PKG-INFO
+writing dependency_links to ../../build/turtle_py/turtle_py.egg-info/dependency_links.txt
+writing entry points to ../../build/turtle_py/turtle_py.egg-info/entry_points.txt
+writing requirements to ../../build/turtle_py/turtle_py.egg-info/requires.txt
+writing top-level names to ../../build/turtle_py/turtle_py.egg-info/top_level.txt
+reading manifest file '../../build/turtle_py/turtle_py.egg-info/SOURCES.txt'
+writing manifest file '../../build/turtle_py/turtle_py.egg-info/SOURCES.txt'
+running build
+running build_py
+copying turtle_py/distance_publisher.py -> /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/build/turtle_py/build/lib/turtle_py
+copying turtle_py/distance_monitor.py -> /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/build/turtle_py/build/lib/turtle_py
+copying turtle_py/square_driver.py -> /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/build/turtle_py/build/lib/turtle_py
+running install
+running install_lib
+creating /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/lib/python3.10/site-packages/turtle_py
+copying /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/build/turtle_py/build/lib/turtle_py/__init__.py -> /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/lib/python3.10/site-packages/turtle_py
+copying /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/build/turtle_py/build/lib/turtle_py/distance_publisher.py -> /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/lib/python3.10/site-packages/turtle_py
+copying /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/build/turtle_py/build/lib/turtle_py/distance_monitor.py -> /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/lib/python3.10/site-packages/turtle_py
+copying /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/build/turtle_py/build/lib/turtle_py/square_driver.py -> /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/lib/python3.10/site-packages/turtle_py
+byte-compiling /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/lib/python3.10/site-packages/turtle_py/__init__.py to __init__.cpython-310.pyc
+byte-compiling /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/lib/python3.10/site-packages/turtle_py/distance_publisher.py to distance_publisher.cpython-310.pyc
+byte-compiling /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/lib/python3.10/site-packages/turtle_py/distance_monitor.py to distance_monitor.cpython-310.pyc
+byte-compiling /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/lib/python3.10/site-packages/turtle_py/square_driver.py to square_driver.cpython-310.pyc
+running install_data
+copying resource/turtle_py -> /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/share/ament_index/resource_index/packages
+copying package.xml -> /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/share/turtle_py
+running install_egg_info
+Copying ../../build/turtle_py/turtle_py.egg-info to /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/lib/python3.10/site-packages/turtle_py-0.0.0-py3.10.egg-info
+running install_scripts
+Installing distance_pub script to /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/lib/turtle_py
+Installing distance_sub script to /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/lib/turtle_py
+Installing square_driver script to /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/lib/turtle_py
+writing list of installed files to '/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/build/turtle_py/install.log'

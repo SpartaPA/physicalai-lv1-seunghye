@@ -1,0 +1,32 @@
+[0.288s] Invoking command in '/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/src/turtle_py': PYTHONPATH=/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/build/turtle_py/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/turtle_py build --build-base /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/build/turtle_py/build install --record /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/build/turtle_py/install.log --install-scripts $base/lib/turtle_py --single-version-externally-managed install_data
+[0.396s] running egg_info
+[0.396s] writing ../../build/turtle_py/turtle_py.egg-info/PKG-INFO
+[0.396s] writing dependency_links to ../../build/turtle_py/turtle_py.egg-info/dependency_links.txt
+[0.396s] writing entry points to ../../build/turtle_py/turtle_py.egg-info/entry_points.txt
+[0.396s] writing requirements to ../../build/turtle_py/turtle_py.egg-info/requires.txt
+[0.396s] writing top-level names to ../../build/turtle_py/turtle_py.egg-info/top_level.txt
+[0.397s] reading manifest file '../../build/turtle_py/turtle_py.egg-info/SOURCES.txt'
+[0.397s] writing manifest file '../../build/turtle_py/turtle_py.egg-info/SOURCES.txt'
+[0.397s] running build
+[0.397s] running build_py
+[0.397s] copying turtle_py/turtle_tf_marker_broadcaster.py -> /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/build/turtle_py/build/lib/turtle_py
+[0.397s] copying turtle_py/distance_monitor.py -> /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/build/turtle_py/build/lib/turtle_py
+[0.397s] copying turtle_py/calc_utils.py -> /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/build/turtle_py/build/lib/turtle_py
+[0.397s] running install
+[0.397s] running install_lib
+[0.397s] copying /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/build/turtle_py/build/lib/turtle_py/turtle_tf_marker_broadcaster.py -> /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/lib/python3.10/site-packages/turtle_py
+[0.397s] copying /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/build/turtle_py/build/lib/turtle_py/distance_monitor.py -> /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/lib/python3.10/site-packages/turtle_py
+[0.398s] copying /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/build/turtle_py/build/lib/turtle_py/calc_utils.py -> /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/lib/python3.10/site-packages/turtle_py
+[0.398s] byte-compiling /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/lib/python3.10/site-packages/turtle_py/turtle_tf_marker_broadcaster.py to turtle_tf_marker_broadcaster.cpython-310.pyc
+[0.398s] byte-compiling /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/lib/python3.10/site-packages/turtle_py/distance_monitor.py to distance_monitor.cpython-310.pyc
+[0.398s] byte-compiling /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/lib/python3.10/site-packages/turtle_py/calc_utils.py to calc_utils.cpython-310.pyc
+[0.398s] running install_data
+[0.398s] running install_egg_info
+[0.398s] removing '/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/lib/python3.10/site-packages/turtle_py-0.0.0-py3.10.egg-info' (and everything under it)
+[0.400s] Copying ../../build/turtle_py/turtle_py.egg-info to /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/lib/python3.10/site-packages/turtle_py-0.0.0-py3.10.egg-info
+[0.400s] running install_scripts
+[0.414s] Installing distance_pub script to /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/lib/turtle_py
+[0.414s] Installing distance_sub script to /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/lib/turtle_py
+[0.414s] Installing square_driver script to /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/lib/turtle_py
+[0.414s] writing list of installed files to '/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/build/turtle_py/install.log'
+[0.426s] Invoked command in '/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/src/turtle_py' returned '0': PYTHONPATH=/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/build/turtle_py/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/turtle_py build --build-base /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/build/turtle_py/build install --record /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/build/turtle_py/install.log --install-scripts $base/lib/turtle_py --single-version-externally-managed install_data

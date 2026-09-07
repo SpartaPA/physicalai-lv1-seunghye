@@ -1,0 +1,6 @@
+[35m[1mConsolidate compiler generated dependencies of target turtle_distance_publisher[0m
+[35m[1mConsolidate compiler generated dependencies of target turtle_distance_subscriber[0m
+[ 25%] [32mBuilding CXX object CMakeFiles/turtle_distance_publisher.dir/src/turtle_distance_publisher.cpp.o[0m
+[ 50%] [32mBuilding CXX object CMakeFiles/turtle_distance_subscriber.dir/src/turtle_distance_subscriber.cpp.o[0m
+[ 75%] [32m[1mLinking CXX executable turtle_distance_subscriber[0m
+[ 75%] Built target turtle_distance_subscriber

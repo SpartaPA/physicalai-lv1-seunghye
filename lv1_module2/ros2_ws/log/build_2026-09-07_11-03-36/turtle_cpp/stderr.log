@@ -1,0 +1,37 @@
+[01m[K/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/src/turtle_cpp/src/turtle_distance_publisher.cpp:86:20:[m[K [01;31m[Kerror: [m[K‘[01m[Kchat[m[K’ has not been declared
+   86 | int main(int argc, [01;31m[Kchat[m[K * argv[])
+      |                    [01;31m[K^~~~[m[K
+[01m[K/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/src/turtle_cpp/src/turtle_distance_publisher.cpp:86:5:[m[K [01;35m[Kwarning: [m[Ksecond argument of ‘[01m[Kint main(int, int**)[m[K’ should be ‘[01m[Kchar **[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wmain-Wmain]8;;[m[K]
+   86 | int [01;35m[Kmain[m[K(int argc, chat * argv[])
+      |     [01;35m[K^~~~[m[K
+[01m[K/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/src/turtle_cpp/src/turtle_distance_publisher.cpp:[m[K In function ‘[01m[Kint main(int, int**)[m[K’:
+[01m[K/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/src/turtle_cpp/src/turtle_distance_publisher.cpp:88:24:[m[K [01;31m[Kerror: [m[Kcannot convert ‘[01m[Kint**[m[K’ to ‘[01m[Kconst char* const*[m[K’
+   88 |     rclcpp::init(argc, [01;31m[Kargv[m[K); // ROS2 C++ 시스템 초기화
+      |                        [01;31m[K^~~~[m[K
+      |                        [01;31m[K|[m[K
+      |                        [01;31m[Kint**[m[K
+In file included from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/logging.hpp:25[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/client.hpp:40[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/callback_group.hpp:24[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/any_executable.hpp:20[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/memory_strategy.hpp:25[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/memory_strategies.hpp:18[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executor_options.hpp:20[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executor.hpp:37[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executors/multi_threaded_executor.hpp:25[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executors.hpp:21[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/rclcpp.hpp:155[m[K,
+                 from [01m[K/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/src/turtle_cpp/src/turtle_distance_publisher.cpp:3[m[K:
+[01m[K/opt/ros/humble/include/rclcpp/rclcpp/utilities.hpp:77:24:[m[K [01;36m[Knote: [m[K  initializing argument 2 of ‘[01m[Kvoid rclcpp::init(int, const char* const*, const rclcpp::InitOptions&, rclcpp::SignalHandlerOptions)[m[K’
+   77 |   [01;36m[Kchar const * const * argv[m[K,
+      |   [01;36m[K~~~~~~~~~~~~~~~~~~~~~^~~~[m[K
+[01m[K/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/src/turtle_cpp/src/turtle_distance_subscriber.cpp:[m[K In function ‘[01m[Kint main(int, char**)[m[K’:
+[01m[K/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/src/turtle_cpp/src/turtle_distance_subscriber.cpp:39:11:[m[K [01;31m[Kerror: [m[Kexpected primary-expression before ‘[01m[K.[m[K’ token
+   39 |     rclcpp[01;31m[K.[m[Kinit(argc,argv);// ROS2 C++ 시스템 초기화
+      |           [01;31m[K^[m[K
+gmake[2]: *** [CMakeFiles/turtle_distance_subscriber.dir/build.make:76: CMakeFiles/turtle_distance_subscriber.dir/src/turtle_distance_subscriber.cpp.o] 오류 1
+gmake[1]: *** [CMakeFiles/Makefile2:165: CMakeFiles/turtle_distance_subscriber.dir/all] 오류 2
+gmake[1]: *** 끝나지 않은 작업을 기다리고 있습니다....
+gmake[2]: *** [CMakeFiles/turtle_distance_publisher.dir/build.make:76: CMakeFiles/turtle_distance_publisher.dir/src/turtle_distance_publisher.cpp.o] 오류 1
+gmake[1]: *** [CMakeFiles/Makefile2:139: CMakeFiles/turtle_distance_publisher.dir/all] 오류 2
+gmake: *** [Makefile:146: all] 오류 2

@@ -1,0 +1,26 @@
+[35m[1mConsolidate compiler generated dependencies of target turtle_distance_subscriber[0m
+[35m[1mConsolidate compiler generated dependencies of target turtle_distance_publisher[0m
+[ 50%] Built target turtle_distance_subscriber
+[ 75%] [32mBuilding CXX object CMakeFiles/turtle_distance_publisher.dir/src/turtle_distance_publisher.cpp.o[0m
+[100%] [32m[1mLinking CXX executable turtle_distance_publisher[0m
+[100%] Built target turtle_distance_publisher
+-- Install configuration: ""
+-- Installing: /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_cpp/lib/turtle_cpp/turtle_distance_publisher
+-- Set runtime path of "/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_cpp/lib/turtle_cpp/turtle_distance_publisher" to ""
+-- Installing: /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_cpp/lib/turtle_cpp/turtle_distance_subscriber
+-- Set runtime path of "/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_cpp/lib/turtle_cpp/turtle_distance_subscriber" to ""
+-- Installing: /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_cpp/share/ament_index/resource_index/package_run_dependencies/turtle_cpp
+-- Installing: /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_cpp/share/ament_index/resource_index/parent_prefix_path/turtle_cpp
+-- Installing: /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_cpp/share/turtle_cpp/environment/ament_prefix_path.sh
+-- Installing: /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_cpp/share/turtle_cpp/environment/ament_prefix_path.dsv
+-- Installing: /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_cpp/share/turtle_cpp/environment/path.sh
+-- Installing: /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_cpp/share/turtle_cpp/environment/path.dsv
+-- Installing: /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_cpp/share/turtle_cpp/local_setup.bash
+-- Installing: /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_cpp/share/turtle_cpp/local_setup.sh
+-- Installing: /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_cpp/share/turtle_cpp/local_setup.zsh
+-- Installing: /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_cpp/share/turtle_cpp/local_setup.dsv
+-- Installing: /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_cpp/share/turtle_cpp/package.dsv
+-- Installing: /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_cpp/share/ament_index/resource_index/packages/turtle_cpp
+-- Installing: /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_cpp/share/turtle_cpp/cmake/turtle_cppConfig.cmake
+-- Installing: /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_cpp/share/turtle_cpp/cmake/turtle_cppConfig-version.cmake
+-- Installing: /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_cpp/share/turtle_cpp/package.xml

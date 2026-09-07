@@ -1,0 +1,71 @@
+[0.053s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build', '--packages-select', 'turtle_py']
+[0.053s] DEBUG:colcon:Parsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='build', build_base='build', install_base='install', merge_install=False, symlink_install=False, test_result_base=None, continue_on_error=False, executor='parallel', parallel_workers=24, event_handlers=None, ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['.'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=['turtle_py'], packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, allow_overriding=[], cmake_args=None, cmake_target=None, cmake_target_skip_unavailable=False, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, ament_cmake_args=None, catkin_cmake_args=None, catkin_skip_building_tests=False, mixin_files=None, mixin=None, verb_parser=<colcon_mixin.mixin.mixin_argument.MixinArgumentDecorator object at 0x7a8612956140>, verb_extension=<colcon_core.verb.build.BuildVerb object at 0x7a8612a87970>, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0x7a8612a87970>>, mixin_verb=('build',))
+[0.143s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[0.143s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[0.143s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[0.143s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[0.143s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[0.143s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[0.143s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws'
+[0.144s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.144s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[0.144s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[0.144s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[0.144s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[0.144s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[0.144s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[0.144s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[0.144s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[0.163s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[0.163s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[0.163s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[0.163s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[0.164s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[0.272s] DEBUG:colcon.colcon_core.package_identification:Package '.' with type 'python' and name 'turtle_py'
+[0.273s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[0.273s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[0.273s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[0.273s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[0.273s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[0.282s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[0.282s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[0.283s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 16 installed packages in /home/pa21/turtlebot3_ws/install
+[0.284s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 372 installed packages in /opt/ros/humble
+[0.284s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[0.302s] Level 5:colcon.colcon_core.verb:set package 'turtle_py' build argument 'cmake_args' from command line to 'None'
+[0.302s] Level 5:colcon.colcon_core.verb:set package 'turtle_py' build argument 'cmake_target' from command line to 'None'
+[0.302s] Level 5:colcon.colcon_core.verb:set package 'turtle_py' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.302s] Level 5:colcon.colcon_core.verb:set package 'turtle_py' build argument 'cmake_clean_cache' from command line to 'False'
+[0.302s] Level 5:colcon.colcon_core.verb:set package 'turtle_py' build argument 'cmake_clean_first' from command line to 'False'
+[0.302s] Level 5:colcon.colcon_core.verb:set package 'turtle_py' build argument 'cmake_force_configure' from command line to 'False'
+[0.302s] Level 5:colcon.colcon_core.verb:set package 'turtle_py' build argument 'ament_cmake_args' from command line to 'None'
+[0.302s] Level 5:colcon.colcon_core.verb:set package 'turtle_py' build argument 'catkin_cmake_args' from command line to 'None'
+[0.302s] Level 5:colcon.colcon_core.verb:set package 'turtle_py' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.302s] DEBUG:colcon.colcon_core.verb:Building package 'turtle_py' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/build/turtle_py', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py', 'merge_install': False, 'path': '/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws', 'symlink_install': False, 'test_result_base': None}
+[0.303s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[0.303s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[0.303s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws'
+[0.304s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[0.304s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.304s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.585s] DEBUG:colcon.colcon_core.task.python.build:Available setuptools commands: symlink_data, bdist_wheel, install, test, install_scripts, rotate, install_headers, upload_docs, update_catalog, build_py, build_scripts, bdist, sdist, build_clib, extract_messages, build_ext, install_egg_info, upload, saveopts, install_lib, bdist_rpm, bdist_egg, init_catalog, alias, install_data, clean, bdist_dumb, egg_info, check, build, register, easy_install, develop, dist_info, compile_catalog, setopt
+[0.587s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws': PYTHONPATH=/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/build/turtle_py/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base build/turtle_py build --build-base /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/build/turtle_py/build install --record /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/build/turtle_py/install.log --single-version-externally-managed install_data
+[0.696s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws' returned '1': PYTHONPATH=/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/build/turtle_py/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/turtle_py/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base build/turtle_py build --build-base /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/build/turtle_py/build install --record /home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/build/turtle_py/install.log --single-version-externally-managed install_data
+[0.706s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[0.706s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[0.706s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '1'
+[0.706s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[0.709s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[0.709s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[0.709s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[0.716s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[0.716s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/local_setup.ps1'
+[0.717s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/_local_setup_util_ps1.py'
+[0.717s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/setup.ps1'
+[0.718s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/local_setup.sh'
+[0.718s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/_local_setup_util_sh.py'
+[0.718s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/setup.sh'
+[0.719s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/local_setup.bash'
+[0.719s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/setup.bash'
+[0.719s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/local_setup.zsh'
+[0.720s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/pa21/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws/install/setup.zsh'
