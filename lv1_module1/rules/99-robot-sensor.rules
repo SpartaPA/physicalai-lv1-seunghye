@@ -1,0 +1,5 @@
+# 3. /etc 경로에 있던 udev 규칙 파일을 rules 폴더로 복사
+#mkdir -p ./lv1_module1/rules
+#cp /etc/udev/rules.d/99-robot-sensor.rules ./lv1_module1/rules/
+KERNEL=="loop*", ATTR{size}=="32768", SYMLINK+="robot_lidar"
+KERNEL=="loop*", ATTR{size}=="49152", SYMLINK+="robot_imu"
