@@ -1,7 +1,7 @@
 # 과제 보고서
 
 
-##문제1. C++ 빌드 체계 세우기— g++ 다중 파일 빌드와 CMake 전환
+## 문제1. C++ 빌드 체계 세우기— g++ 다중 파일 빌드와 CMake 전환
 
 ### 1. 수동 2단계 빌드 명령(터미널 입력)
 ``` bash
@@ -73,7 +73,7 @@ Consolidate compiler generated dependencies of target motor_app
 
 ---
 
-##문제2. 현대 C++로 센서 계층 구현 — RAII·다형성·STL
+## 문제2. 현대 C++로 센서 계층 구현 — RAII·다형성·STL
 
 ### 1. 다형성 루프 출력
 ```text
@@ -138,7 +138,7 @@ Consolidate compiler generated dependencies of target motor_app
 
 ---
 
-##문제3. ROS 2 멀티노드 기반 turtlesim 자율 주행 및 제어 시스템 구현
+## 문제3. ROS 2 멀티노드 기반 turtlesim 자율 주행 및 제어 시스템 구현
 -실행경로 :
  `cd ~/seunghye/physicalai-lv1-seunghye/lv1_module2/ros2_ws`
 -turtle_py 빌드 :
@@ -194,7 +194,7 @@ angular_velocity: 0.0 각속도
 
 ---
 
-##문제4. 4. rclcpp 노드 작성 — C++ 발행자와 구독자
+## 문제4. rclcpp 노드 작성 — C++ 발행자와 구독자
 
 ### 1. colcon build 성공 출력
 ![alt text](screenshots/image-3.png)
@@ -215,15 +215,15 @@ angular_velocity: 0.0 각속도
 
 
 
-# ROS2 과제 보고서 - 문제 10: 시각화·기록·테스트로 검증하기
+## 문제 10: 시각화·기록·테스트로 검증하기
 
-## 1. rqt_graph 캡처 및 데이터 미수신 진단 절차
+### 1. rqt_graph 캡처 및 데이터 미수신 진단 절차
 
-### [rqt_graph 캡처 이미지]
+**[rqt_graph 캡처 이미지]**
 ![alt text](screenshots/image-5.png)
 ![alt text](screenshots/image-6.png)
 
-### [데이터 미수신 시 단계별 진단 절차]
+**[데이터 미수신 시 단계별 진단 절차]**
 1. **노드 생존 확인**: `ros2 node list`를 실행하여 발행자/구독자 노드가 목록에 있는지 확인.
 2. **토픽명 검증**: `ros2 topic list`를 통해 토픽 이름 오타 및 존재 여부 점검.
 3. **데이터 흐름 모니터링**: `ros2 topic echo /turtle_distance`로 데이터 수신 여부 직접 확인.
@@ -236,16 +236,16 @@ angular_velocity: 0.0 각속도
 
 ---
 
-## 2. RViz2 TF + 경유점 마커 캡처
+### 2. RViz2 TF + 경유점 마커 캡처
 - why? 거북이 위치(TF)와 목표 지점(Marker)이 제대로 잡혔는지 눈으로 확인하기 위해 필요
 - turtle_tf_marker_broadcaster.py 노드 실행 : `ros2 run turtle_py turtle_tf_marker_broadcaster`
 - `rviz2` 실행 후 Fixed Frame을 world로 설정
 - TF 및 MarkerArray display를 추가하여 거북이 좌표축과 빨간색 경유점 구체가 뜨는 화면을 캡처.
 
-### [Rviz2 화면 캡쳐]
+**[Rviz2 화면 캡쳐]**
 ![alt text](screenshots/image-7.png)
 
-## 3. ros2 bag play 재생 중 구독자 로그
+### 3. ros2 bag play 재생 중 구독자 로그
 - what? <br>
  거북이가 움직일 때 발생하는 토픽 신호들을 파일로 저장(Record)하고, 나중에 똑같이 다시 틀어주는(Play) 테스트
 - why? <br>실제 로봇이나 시뮬레이터를 매번 켜지 않고도, 과거에 녹화해 둔 주행 데이터만 가지고 내 코드(구독자 노드)가 잘 돌아가는지 오프라인 상태에서 테스트할 수 있음
@@ -258,7 +258,7 @@ angular_velocity: 0.0 각속도
 * **기록된 토픽 목록**: `/turtle1/pose`, `/turtle_distance`
 * **기록된 총 메시지 수**: 약 450개 메시지 (약 45초 분량)
 
-### [ros2 bag play 실행 시 구독자 노드 출력 로그]
+**[ros2 bag play 실행 시 구독자 노드 출력 로그]**
 ![alt text](screenshots/ros2_bag_play.gif)
 
 ### 4. pytest 통과 출력 
