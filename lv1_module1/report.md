@@ -77,15 +77,15 @@ SSH 데몬(`openssh-server`)을 설치하고 22번 포트가 정상적으로 열
     LISTEN 0      128          0.0.0.0:22         0.0.0.0:*                                   
     LISTEN 0      128             [::]:22            [::]:*  
 ```
-![alt text](image.png)
+![alt text](images/image.png)
 
 `who` , `echo $SSH_CONNECTION`
 
-![alt text](image-1.png)
+![alt text](images/image-1.png)
 
 ### 2. 개인키·공개키 중 서버에 등록하는 것: 공개키 (id_rsa.pub)
 
-![alt text](image-2.png)
+![alt text](images/image-2.png)
 ```text
 안전한 이유: 공개키는 데이터를 암호화하거나 서명을 검증하는 용도로만 쓰여 외부에 공개되어도 안전하며, 암호화된 데이터를 푸는 핵심인 개인키(id_rsa)는 접속을 시도하는 클라이언트 컴퓨터에만 비밀로 보관되기 때문.
 
@@ -102,7 +102,7 @@ id_rsa.pub (공개키 - 서버 전달용)
 - scp 파일 전송 테스트 : `touch test_sensor_config.txt` , <br>
 `scp test_sensor_config.txt pa21@localhost:~/fake_sensors`
 
-![alt text](image-3.png)
+![alt text](images/image-3.png)
 
 ---
 ### 4. 두 장치를 구분한 속성:
@@ -169,7 +169,7 @@ sudo losetup -f --show imu.img
 # 3. 라이다(16M) 나중에 연결 (예: loop25로 할당)
 sudo losetup -f --show lidar.img
 ```
-![alt text](image-4.png)
+![alt text](images/image-4.png)
 
 ---
 

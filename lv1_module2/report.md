@@ -169,7 +169,7 @@ angular_velocity: 0.0 각속도
 ### 2. ros2 topic hz /turtle_distance 출력
 `ros2 topic hz/turtle_distance` 실행결과:
 -**평균 발행 주기 (average rate):** 9.998 Hz (약 10.0 Hz)
-![alt text](image-1.png)
+![alt text](screenshots/image-1.png)
 
 ### 3. 터미널 3: 발행 주기 10Hz 검증
 `distance_sub` 실행 중 거북이가 원점에서 2.5m 이상 멀어졌을 때 출력된 경고 로그:
@@ -182,25 +182,25 @@ angular_velocity: 0.0 각속도
 
 ### 4. 구독자 2개 동시 수신 확인 (양쪽 로그)
 `distance_sub` 터미널에서 동시에 수신하는 화면
-![alt text](image.png)
+![alt text](screenshots/image.png)
 
 ### 5.정사각형 주행 캡처 (turtlesim 화면)
 
-![alt text](square_drive.gif)
+![alt text](screenshots/square_drive.gif)
 
 ### 6.종료화면
 
-![alt text](image-2.png)
+![alt text](screenshots/image-2.png)
 
 ---
 
 ##문제4. 4. rclcpp 노드 작성 — C++ 발행자와 구독자
 
 ### 1. colcon build 성공 출력
-![alt text](image-3.png)
+![alt text](screenshots/image-3.png)
 
 ### 2. rclpy 발행에서 rclcpp 구독으로 이어진 로그
-![alt text](pub_py_sub_cpp.gif)
+![alt text](screenshots/pub_py_sub_cpp.gif)
 
 ### 3. rclpy 코드와 rclcpp 대응 관계표 - 노드생성/타이머/콜백/종료(4행)
 
@@ -220,8 +220,8 @@ angular_velocity: 0.0 각속도
 ## 1. rqt_graph 캡처 및 데이터 미수신 진단 절차
 
 ### [rqt_graph 캡처 이미지]
-![alt text](image-5.png)
-![alt text](image-6.png)
+![alt text](screenshots/image-5.png)
+![alt text](screenshots/image-6.png)
 
 ### [데이터 미수신 시 단계별 진단 절차]
 1. **노드 생존 확인**: `ros2 node list`를 실행하여 발행자/구독자 노드가 목록에 있는지 확인.
@@ -243,7 +243,7 @@ angular_velocity: 0.0 각속도
 - TF 및 MarkerArray display를 추가하여 거북이 좌표축과 빨간색 경유점 구체가 뜨는 화면을 캡처.
 
 ### [Rviz2 화면 캡쳐]
-![alt text](image-7.png)
+![alt text](screenshots/image-7.png)
 
 ## 3. ros2 bag play 재생 중 구독자 로그
 - what? <br>
@@ -259,7 +259,7 @@ angular_velocity: 0.0 각속도
 * **기록된 총 메시지 수**: 약 450개 메시지 (약 45초 분량)
 
 ### [ros2 bag play 실행 시 구독자 노드 출력 로그]
-![alt text](ros2_bag_play.gif)
+![alt text](screenshots/ros2_bag_play.gif)
 
 ### 4. pytest 통과 출력 
 pytest로 핵심 계산 함수 정밀 진단 (단위 테스트)
@@ -273,11 +273,11 @@ pytest로 핵심 계산 함수 정밀 진단 (단위 테스트)
 3.`PYTHONNOUSERSITE=1 PYTHONPATH=src/turtle_py python3 -m pytest src/turtle_py/test/test_turtle_calc.py` 명령어 실행하여 3 passed 화면 캡처.<br>
 4.함수 하나를 일부러 덧셈($+$)에서 뺄셈($-$)으로 틀리게 바꾼 후, pytest가 에러를 잡아내는 실패 출력 로그를 포획(Capture)하고 다시 원상복구.
 
-![alt text](image-8.png)
+![alt text](screenshots/image-8.png)
 
 ### 5. 함수를 틀리게 바꿨을 때 실패 출력
 calc_util.py > calculate_distance() 함수 연산 + -> - 로 변경 후 오류 로그
-![alt text](image-9.png)
+![alt text](screenshots/image-9.png)
 
 ### 6.예외 처리·logging 동작 확인
 사용자가 ros2 param set 명령어로 말도 안 되는 값(예: 발행 주기 publish_rate = 0 또는 음수)을 입력하거나, 경유점 목록이 비어있는 상태로 노드를 켰을 때 노드가 Down(Crash)되지 않고 [WARN] 경고 로그를 남기며 안전한 기본값으로 전환되도록 만드는 것
@@ -298,4 +298,4 @@ calc_util.py > calculate_distance() 함수 연산 + -> - 로 변경 후 오류 �
 3. 검증 결과 관찰 및 report.md 작성 팁
 실행 시 노드 터미널(터미널 1)에 아래와 같이 빨간색/노란색 로깅 메시지가 찍히며 노드가 죽지 않고 정상 유지되는 것을 확인
 
-![alt text](image-10.png)
+![alt text](screenshots/image-10.png)
