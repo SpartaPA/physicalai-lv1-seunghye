@@ -48,16 +48,37 @@ def inv_T(T: np.ndarray) -> np.ndarray:
     T_inv[:3, 3] = -R.T @ t # 2. -R^T @ t 계산결과를 위치 부분에 넣음
 
     return T_inv
-def to_homogeneous(v: np.ndarray, is_point: bool = True) -> np.ndarray:
+def to_homogeneous(v: np.ndarray, is_point: bool = True, w=None) -> np.ndarray:
     """3차원 벡터 뒤에 1(점) 또는 0(방향)을 붙여 4차원 동차좌표로 만든다.
     3D 좌표 포인트들을 동차 좌표계(Homogeneous coordinates)로 변환합니다.
     (3,) 또는 (N,3) 좌표에 마지막 성분 w 를 붙인다.
 
     w = 1 이면 점(위치), w = 0 이면 방향(벡터).
+    두 번째 인자는 bool(is_point) 또는 수치 w(1.0/0.0)를 모두 받는다.
     """
-    w = 1.0 if is_point else 0.0
-    
-    return np.append(v,w)
+    # w 키워드가 주어지면 우선, 아니면 is_point 해석 (bool 또는 수치 w 허용)
+    if w is not None:
+        w_val = float(w)
+    elif isinstance(is_point, (bool, np.bool_)):
+        w_val = 1.0 if is_point else 0.0
+    else:
+        try:
+            w_val = float(is_point)
+        except (TypeError, ValueError):
+            w_val = 1.0 if is_point else 0.0
+
+    arr = np.asarray(v, dtype=float)
+    if arr.ndim == 1:
+        if arr.shape[0] != 3:
+            raise ValueError(f"3차원 벡터가 필요합니다. 받은 shape={arr.shape}")
+        return np.append(arr, w_val)
+    elif arr.ndim == 2:
+        if arr.shape[1] != 3:
+            raise ValueError(f"(N,3) 점군이 필요합니다. 받은 shape={arr.shape}")
+        wcol = np.full((arr.shape[0], 1), w_val, dtype=float)
+        return np.hstack([arr, wcol])
+    else:
+        raise ValueError(f"(3,) 또는 (N,3) 입력이 필요합니다. 받은 shape={arr.shape}")
 
 
 def transform_direction(T,v) -> np.ndarray:
@@ -82,9 +103,31 @@ def transform_points(points: np.ndarray, T: np.ndarray) -> np.ndarray:
         (N,3) 점군을 **반복문 없이** 한 번에 변환한다. (3,) 입력도 받아야 한다.
 
        힌트: (T @ P_h.T).T 대신 P_h @ T.T 를 쓰면 전치가 한 번으로 끝나고
-                 메모리 접근도 행 방향이라 캐시에 유리하다.  
+                  메모리 접근도 행 방향이라 캐시에 유리하다.  
+        노트북은 transform_points(T, points) 순서로 호출하므로 양쪽 순서를 모두 지원한다
+        (4x4 형상으로 판별).
     """
-    return
+    P_arr = np.asarray(points, dtype=float)
+    T_arr = np.asarray(T, dtype=float)
+    # 노트북 호출 순서(T, points)와 정의 순서(points, T) 모두 지원: 4x4를 T로 판별
+    if P_arr.shape == (4, 4) and T_arr.shape != (4, 4):
+        P_arr, T_arr = T_arr, P_arr
+    if T_arr.shape != (4, 4):
+        raise ValueError(f"4x4 동차변환이 필요합니다. 받은 shape={T_arr.shape}")
+    if P_arr.ndim == 1:
+        if P_arr.shape[0] != 3:
+            raise ValueError(f"3차원 벡터가 필요합니다. 받은 shape={P_arr.shape}")
+        Ph = np.append(P_arr, 1.0)
+        return (T_arr @ Ph)[:3]
+    elif P_arr.ndim == 2:
+        if P_arr.shape[1] != 3:
+            raise ValueError(f"(N,3) 점군이 필요합니다. 받은 shape={P_arr.shape}")
+        if P_arr.shape[0] == 0:
+            return np.empty((0, 3), dtype=float)
+        Ph = np.hstack([P_arr, np.ones((P_arr.shape[0], 1), dtype=float)])
+        return (Ph @ T_arr.T)[:, :3]
+    else:
+        raise ValueError(f"(3,) 또는 (N,3) 입력이 필요합니다. 받은 shape={P_arr.shape}")
 
 def inv_T_batch(T_batch: np.ndarray) -> np.ndarray:
     """배치 형태의 변환 행렬(N, 4, 4) = (Batch Size,Rows,Cols)들의 역행렬을 계산합니다.
@@ -132,16 +175,30 @@ def inv_T_batch(T_batch: np.ndarray) -> np.ndarray:
 
 
 def least_squares_normal_equation(A: np.ndarray, b: np.ndarray) -> np.ndarray:
-    """정규 방정식(A^T A x = A^T b)을 풀어 최소제곱해 x를 구합니다."""
-    return
+    """정규 방정식(A^T A x = A^T b)을 풀어 최소제곱해 x를 구합니다.
+    반환: (x_hat, residual) — residual = b - A @ x_hat.
+    """
+    A = np.asarray(A, dtype=float)
+    b = np.asarray(b, dtype=float)
+    AtA = A.T @ A
+    Atb = A.T @ b
+    x_hat = np.linalg.solve(AtA, Atb)
+    residual = b - A @ x_hat
+    return x_hat, residual
 
 
 
 
 
-def rmse(y_true: np.ndarray, y_pred: np.ndarray) -> float:
-    """실제 값과 예측 값 사이의 평균 제곱근 오차(RMSE)를 계산합니다."""
-    return
+def rmse(y_true: np.ndarray, y_pred: np.ndarray = None) -> float:
+    """실제 값과 예측 값 사이의 평균 제곱근 오차(RMSE)를 계산합니다.
+    rmse(residual) 한 인자 호출도 지원 (residual의 RMS).
+    """
+    a = np.asarray(y_true, dtype=float)
+    if y_pred is None:
+        return float(np.sqrt(np.mean(a ** 2)))
+    b = np.asarray(y_pred, dtype=float)
+    return float(np.sqrt(np.mean((a - b) ** 2)))
 
 
 

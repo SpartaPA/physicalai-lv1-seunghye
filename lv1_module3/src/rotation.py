@@ -39,11 +39,42 @@ def rodrigues(axis, theta):
     
     return R
 
-def gram_schmidt() :
-    return
+def gram_schmidt(A) -> np.ndarray:
+    """열벡터에 대해 Modified Gram-Schmidt 직교정규화를 수행한다.
 
-def is_rotation() :
-    return
+    q1 = a1 / |a1|,  vj = aj - sum_{i<j} (qi.vj) qi  (빼자마자 갱신),  qj = vj / |vj|
+    마지막에 det(Q) < 0 이면 마지막 열 부호를 뒤집어 det=+1 로 맞춘다.
+    """
+    A = np.asarray(A, dtype=float)
+    if A.ndim != 2 or A.shape[0] != A.shape[1]:
+        raise ValueError(f"정방행렬이 필요합니다. 받은 shape={A.shape}")
+    n = A.shape[0]
+    Q = np.zeros_like(A, dtype=float)
+    for j in range(n):
+        v = np.asarray(A[:, j], dtype=float).copy()
+        for i in range(j):
+            qi = Q[:, i]
+            coeff = float(np.dot(qi, v))
+            v = v - coeff * qi
+        nrm = float(np.sqrt(float(np.dot(v, v))))
+        if nrm < 1e-12:
+            raise ValueError("앞선 열들에 종속인 열이 있어 정규화할 수 없습니다.")
+        Q[:, j] = v / nrm
+    # 반사(det=-1)가 섞였으면 마지막 열 부호를 뒤집어 회전행렬로 만든다.
+    if float(np.linalg.det(Q)) < 0:
+        Q[:, -1] *= -1
+    return Q
+
+def is_rotation(R, atol: float = 1e-8) -> bool:
+    """회전행렬 판정: 직교(R^T R = I) 그리고 det(R) = +1 이면 True. 3x3이 아니면 False."""
+    R = np.asarray(R, dtype=float)
+    if R.shape != (3, 3):
+        return False
+    if orthogonality_error(R) > atol:
+        return False
+    if abs(float(np.linalg.det(R)) - 1.0) > atol:
+        return False
+    return True
 
 def orthogonality_error(R) -> float:
     """ 행렬 R이 완벽한 회전행렬에서 얼마나 찌그러졌는지 오차를 측정합니다.
@@ -56,7 +87,7 @@ def orthogonality_error(R) -> float:
     E = R.T @ R - I
 
     # 전체 차이의 크기(프로베니우스 노름)를 하나의 숫자로 반환합니다.- 노름 구하기.
-    return norm(dot(E,E))#np.sqrt(np.sum(E * E))
+    return float(np.sqrt(np.sum(E * E)))
 
 ##----------------------회전 행렬 생성 함수
 # ---  X축 기준 회전 행렬 생성 함수 ---
@@ -95,8 +126,6 @@ def rot_z(theta):
         [0, 0, 1]
     ])
 
-
-
 # --------------------------------------------------- 회전축·회전각·쿼터니언
 
 def axis_angle_from_matrix(R, atol: float = 1e-8):
@@ -116,8 +145,31 @@ def axis_angle_from_matrix(R, atol: float = 1e-8):
     axis : 단위 회전축 (3,)
     angle : 회전각 [rad], 0 <= angle <= pi
     """
-    # TODO: 문제 6-4
-    raise NotImplementedError("axis_angle_from_matrix 를 구현하세요")
+    R = np.asarray(R, dtype=float)
+    if R.shape != (3, 3):
+        raise ValueError(f"3x3 회전행렬이 필요합니다. 받은 shape={R.shape}")
+    # 대각합에서 회전각 복원: tr(R) = 1 + 2 cos(theta)
+    cos_theta = float(np.clip((np.trace(R) - 1.0) / 2.0, -1.0, 1.0))
+    angle = float(np.arccos(cos_theta))
+    # 규약 1) theta ~ 0: 회전 없음. 축은 임의로 +z, 각은 0
+    if np.isclose(angle, 0.0, atol=atol):
+        return np.array([0.0, 0.0, 1.0]), 0.0
+    # 규약 2) 고유값 1에 대응하는 고유벡터가 회전축 (R k = k)
+    vals, vecs = np.linalg.eig(R)
+    idx = int(np.argmin(np.abs(vals - 1.0)))
+    axis = np.real(vecs[:, idx]).astype(float)
+    n = float(np.linalg.norm(axis))
+    if n < 1e-12:
+        axis = np.array([0.0, 0.0, 1.0])
+    else:
+        axis = axis / n
+    # 규약 3) theta ~ pi (sin~0): 부호 판별 불가, 고유벡터 그대로 사용
+    # 그 외: R - R^T = 2 sin(theta) [k]x 관계로 부호 정렬
+    if abs(float(np.sin(angle))) > 1e-8:
+        v = np.array([R[2, 1] - R[1, 2], R[0, 2] - R[2, 0], R[1, 0] - R[0, 1]])
+        if float(np.dot(v, axis)) < 0.0:
+            axis = -axis
+    return axis, angle
 
 
 def quaternion_from_axis_angle(axis, angle: float) -> np.ndarray:
@@ -128,12 +180,20 @@ def quaternion_from_axis_angle(axis, angle: float) -> np.ndarray:
     반환 순서는 SciPy `Rotation.as_quat()` 와 같은 **(x, y, z, w)** 로 맞춘다
     (그래야 문제 6-5 에서 바로 비교할 수 있다).
     """
-    # TODO: 문제 6-5
-    axis = np.asarray(axis, dtype=float)
-    theta = np.deg2rad(angle/2)
-    if axis.shape != (3,):
-        raise ValueError(f"회전축은 3차원 벡터여야 합니다. 받은 shape={axis.shape}")
-    q = (axis[0] * np.sin(theta),axis[1] * np.sin(theta),axis[2] * np.sin(theta), np.cos(theta))
-
-    print(q)
-    #raise NotImplementedError("quaternion_from_axis_angle 을 구현하세요")
+    ax = np.asarray(axis, dtype=float)
+    if ax.shape != (3,):
+        raise ValueError(f"회전축은 3차원 벡터여야 합니다. 받은 shape={ax.shape}")
+    n = float(np.linalg.norm(ax))
+    if n < 1e-12:
+        # 영벡터 입력 시 기본 축 +z 사용
+        k = np.array([0.0, 0.0, 1.0])
+    else:
+        k = ax / n
+    # angle 은 라디안 입력이므로 2로만 나눈다 (deg 변환 금지)
+    half = float(angle) / 2.0
+    s, c = float(np.sin(half)), float(np.cos(half))
+    q = np.array([k[0] * s, k[1] * s, k[2] * s, c], dtype=float)
+    qn = float(np.linalg.norm(q))
+    if qn > 1e-12:
+        q = q / qn
+    return q

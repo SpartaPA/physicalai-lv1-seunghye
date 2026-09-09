@@ -14,6 +14,8 @@ __all__ = [
     "cross",
     "det",
     "dot",
+    "gauss_eliminate",
+    "inverse_gauss_jordan",
     "norm",
     "normalize",
     "plane_normal", 
@@ -103,7 +105,7 @@ def reject(a,b)-> float:
 
 def rank(matrix):
     #구현한 가우스 소거법 함수를 호출하여 행 사다리꼴(ref)을 얻습니다.
-    ref , pivots = row_echelon(matrix)
+    ref, pivots, _ = row_echelon(matrix)
 
     # np.abs(ref): 절대값을 취함
     # .sum(axis=1):각 행(가로줄)별로 원소들을 다 더함(axis=1은 가로 방향 합)
@@ -111,7 +113,7 @@ def rank(matrix):
     # np.sum(...): True의 개수를 세어서 살아있는 행의 개수(Rank)를 구함.
     non_zero_rows = np.sum(np.abs(ref).sum(axis=1) > 1e-9)
 
-    return non_zero_rows
+    return int(non_zero_rows)
 
 #1-4 외적을 반대칭행렬 곱으로 구현하고 np.cross와 비교, 반대칭성 검증
 # --- [1] 스큐 행렬(Skew-symmetric Matrix) 생성 함수 ---
@@ -135,7 +137,7 @@ def skew(a):
     ])
 
 def cross(a,b):
-    return np.cross(a,b)
+    return skew(a) @ as_vector(b)
 
 #1-5 세 점이 만드는 편면의 단위 법선
 def plane_normal(P1,P2,P3):
@@ -149,16 +151,28 @@ def plane_normal(P1,P2,P3):
     return normalize(np.cross(u, v))
 
 #1-6 (1,0,1),(1,1,2)의 rank를 구하고 왜 3이 아닌지 설명, 행렬식과 일관성 확인
-def row_echelon(matrix):
-    """가우스 소거법을 통해 행 사다리꼴(REF)과 피벗 열 인덱스를 반환합니다."""
+def row_echelon(matrix, tol: float = 1e-9):
+    """가우스 소거법을 통해 행 사다리꼴(REF)과 피벗 열 인덱스를 반환합니다.
+
+    Parameters
+    ----------
+    matrix : array-like, shape (rows, cols)
+    tol : 피벗 판정 임계값
+
+    Returns
+    -------
+    A : np.ndarray — 행 사다리꼴 (REF)
+    pivots : list[int] — 피벗 열 인덱스
+    n_swaps : int — 행 교환 횟수
+    """
     # matrix.copy(): 원본 행렬 M이 수정되지 않도록 데이터 복사본을 만듭니다.
     #.astype(float): 정수가 섞여 있을 수 있으므로 나눗셈 연산을 위해 소수점(실수) 타입으로 변환합니다.
-    A = matrix.copy().astype(float)
+    A = np.asarray(matrix, dtype=float).copy()
 
     #A.shape: 행렬의 크기를(행 개수, 열 개수) 형태의 튜플로 가져옵니다. (3,3)
     rows, cols = A.shape
-    print("rows:: ", rows,"  cols:: ",cols)
     pivots = []
+    n_swaps = 0
     r = 0 # 현재 처리중인 행(줄) 번호
 
     #열(c)을 왼쪽에서 오른쪽으로 하나씩 순회합니다.
@@ -174,12 +188,14 @@ def row_echelon(matrix):
 
         #가장 큰 절대값이 0에 가깝다면 (0.000000001보다 작다면) 0이면 continue
         #이 열에는 대장으로 쓸 수 있는 숫자가 없으므로 다음 열로 넘어갑니다.
-        if np.abs(A[max_row , c]) <1e-9: 
+        if np.abs(A[max_row , c]) < tol: 
             continue
 
         # --- [행 교환 (Row Swapping)] ---
         # A[[r, max_row]] = A [[max_row, r]] : r번째 행과 가장 큰 숫자가 있던 max_row번째 행의 위치를 서로 바꿉니다.
-        A[[r, max_row]] = A [[max_row, r]]
+        if max_row != r:
+            A[[r, max_row]] = A [[max_row, r]]
+            n_swaps += 1
         pivots.append(c) #피벗이 존재하는 열 번호를 기록합니다.
 
         # --- [아래쪽 행 소거 (0으로 만들기)] ---
@@ -196,17 +212,139 @@ def row_echelon(matrix):
     # --- [부동소수점 오차 정리] ---
     # np.abs(A) < 1e-9: 행렬 원소 중 0.000000001보다 작은 원소들을 True, 나머지를 False로 판별하는 마스크를 만듭니다.
     # A[...] = 0.0: True인 위치의 숫자를 깔끔하게 완전한 0.0으로 바꿔줍니다.(-0.0 제거).
-    A[np.abs(A) < 1e-9] = 0.0
+    A[np.abs(A) < tol] = 0.0
 
-    return A , pivots
+    return A, pivots, n_swaps
 
 # --- [2] 행렬식(Determinant) 계산 함수 ---
-# [역할] 3x3 행렬 M이 공간을 얼마나 팽창/축소시키는지 나타내는 '부피 변화율' 수치를 구합니다.
+# [역할] n x n 행렬이 공간을 얼마나 팽창/축소시키는지 나타내는 '부피 변화율' 수치를 구합니다.
+# 행 사다리꼴의 대각성분 곱 x (-1)^(행 교환 횟수) 로 구합니다.
 def det(matrix):
-    #3x3 행렬의 각 위치 원소를 변수에 나누어 담습니다.
-    a,b,c = matrix[0]
-    d,e,f = matrix[1]
-    g,h,i = matrix[2]
-    #샤루스 공식을 그대로 대입하여 3D 부피(행렬식)를 구합니다. 
-    return a*(e*i - f*h) - b*(d*i - f*g) + c*(d*h - e*g)
-    #return float(np.linalg.det(matrix))  # np.linalg.det: NumPy 내부의 행렬식 계산 함수를 실행하여 소수점(float)으로 반환
+    """행렬식을 row_echelon 기반으로 구한다 (임의의 n x n 지원).
+
+    det = (-1)^n_swaps * prod(diag(U)).
+    특이행렬이면 대각에 0이 나타나 0을 반환한다.
+    """
+    A = np.asarray(matrix, dtype=float)
+    if A.ndim != 2 or A.shape[0] != A.shape[1]:
+        raise ValueError(f"정방행렬이 필요합니다. 받은 shape={A.shape}")
+    n = A.shape[0]
+    if n == 0:
+        return 1.0
+    if n == 1:
+        return float(A[0, 0])
+    # det 전용 소거: row_echelon 의 1e-9 zeroing 이 작은 det 를 삼키지 않도록
+    # 별도 루프에서 부분 피벗팅 + 임계값 없이 계산한다.
+    M = A.copy()
+    n_swaps = 0
+    for k in range(n):
+        piv = int(np.argmax(np.abs(M[k:, k])) + k)
+        if M[piv, k] == 0.0:
+            return 0.0
+        if piv != k:
+            M[[k, piv]] = M[[piv, k]]
+            n_swaps += 1
+        for i in range(k + 1, n):
+            factor = M[i, k] / M[k, k]
+            M[i, k:] -= factor * M[k, k:]
+    return float(((-1) ** n_swaps) * np.prod(np.diag(M)))
+
+
+def gauss_eliminate(A, b, pivoting: bool = True, verbose: bool = False, tol: float = 1e-12):
+    """가우스 소거법(전진 소거 + 후진 대입)으로 Ax = b 를 푼다.
+
+    Parameters
+    ----------
+    A : (n, n) 계수행렬
+    b : (n,) 우변 벡터
+    pivoting : True 면 부분 피벗팅(각 열에서 절댓값 최대 행을 위로),
+               False 면 행 교환 없이 현재 행을 피벗으로 사용
+    verbose : True 면 초기 첨가행렬과 각 단계(행 교환 / 소거)의 첨가행렬을 모두 출력
+    tol : 특이 판정 임계값
+
+    Returns
+    -------
+    x : (n,) 해 벡터
+    steps : list of (n, n+1) 첨가행렬 — steps[0] 은 초기 [A|b],
+            이후 행 교환 직후와 각 열 소거 직후의 복사본을 순서대로 담는다.
+    """
+    A = np.asarray(A, dtype=float)
+    b = np.asarray(b, dtype=float).reshape(-1)
+    if A.ndim != 2 or A.shape[0] != A.shape[1]:
+        raise ValueError(f"정방행렬이 필요합니다. 받은 shape={A.shape}")
+    n = A.shape[0]
+    if b.shape != (n,):
+        raise ValueError(f"b 의 shape 이 맞지 않습니다: {b.shape} vs ({n},)")
+    M = np.hstack([A.copy(), b.reshape(-1, 1)])
+    steps = [M.copy()]
+    if verbose:
+        print("[초기 첨가행렬 [A|b]]")
+        print(M)
+
+    for k in range(n):
+        if pivoting:
+            piv = int(np.argmax(np.abs(M[k:, k])) + k)
+            if abs(M[piv, k]) < tol:
+                raise ValueError("행렬이 특이행렬에 가깝습니다 (피벗 ~0).")
+            if piv != k:
+                M[[k, piv]] = M[[piv, k]]
+                steps.append(M.copy())
+                if verbose:
+                    print(f"[행 교환: {k}행 <-> {piv}행 (부분 피벗팅)]")
+                    print(M)
+        else:
+            if M[k, k] == 0.0:
+                raise ValueError("피벗이 0 입니다 (pivoting=False 에서는 교환하지 않음).")
+        # k열 아래쪽 소거
+        for i in range(k + 1, n):
+            factor = M[i, k] / M[k, k]
+            M[i, k:] -= factor * M[k, k:]
+        steps.append(M.copy())
+        if verbose:
+            print(f"[소거 단계 k={k} — {k}열 아래를 0으로]")
+            print(M)
+
+    # 후진 대입
+    x = np.zeros(n)
+    for i in range(n - 1, -1, -1):
+        if M[i, i] == 0.0:
+            raise ValueError("후진 대입 중 0 피벗을 만났습니다 (특이행렬).")
+        x[i] = (M[i, -1] - float(M[i, i + 1:n] @ x[i + 1:])) / M[i, i]
+    return x, steps
+
+
+def inverse_gauss_jordan(A, verbose: bool = False, tol: float = 1e-12):
+    """가우스-조던 소거 [A|I] -> [I|A^-1] 로 역행렬을 구한다."""
+    A = np.asarray(A, dtype=float)
+    if A.ndim != 2 or A.shape[0] != A.shape[1]:
+        raise ValueError(f"정방행렬이 필요합니다. 받은 shape={A.shape}")
+    n = A.shape[0]
+    M = np.hstack([A.copy(), np.eye(n)])
+    if verbose:
+        print("[초기 [A|I]]")
+        print(M)
+    for k in range(n):
+        piv = int(np.argmax(np.abs(M[k:, k])) + k)
+        if abs(M[piv, k]) < tol:
+            raise ValueError("행렬이 특이행렬에 가깝습니다 (역행렬 없음).")
+        if piv != k:
+            M[[k, piv]] = M[[piv, k]]
+            if verbose:
+                print(f"[행 교환: {k}행 <-> {piv}행]")
+                print(M)
+        # 피벗 행 정규화
+        M[k, :] /= M[k, k]
+        if verbose:
+            print(f"[피벗 행 {k} 정규화]")
+            print(M)
+        # 다른 모든 행 소거
+        for i in range(n):
+            if i == k:
+                continue
+            factor = M[i, k]
+            if factor != 0.0:
+                M[i, :] -= factor * M[k, :]
+        if verbose:
+            print(f"[조던 소거 k={k} — {k}열의 다른 행을 0으로]")
+            print(M)
+    return M[:, n:].copy()

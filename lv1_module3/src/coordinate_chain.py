@@ -66,11 +66,12 @@ class CoordinateChain:
         """
         # TODO: 문제 6-1
         path = [frame]
-
-        # 현재 프레임의 부모가 _parent 딕셔너리에 존재하는 동안 계속 부모를 찾아 올라갑니다.
+        # root까지 부모를 타고 올라가며 경로를 기록한다.
         while path[-1] != self.root:
-            parent = self._parent[path[-1]] # 부모 이름으로 교체
-            path.append(parent)             # 경로 리스트에 추가
+            cur = path[-1]
+            if cur not in self._parent:
+                raise KeyError(f"프레임 '{cur}'이(가) root '{self.root}'에 연결되어 있지 않습니다.")
+            path.append(self._parent[cur])
         return path
         
 
@@ -117,13 +118,28 @@ class CoordinateChain:
 
         (3,) 와 (N,3) 을 모두 지원해야 하고, **반복문을 쓰지 않는다**.
         """
-        # TODO: 문제 6-2
-        raise NotImplementedError("transform 을 구현하세요")
+        Tmat = self.T(target, source)
+        arr = np.asarray(P, dtype=float)
+        if arr.ndim == 1:
+            if arr.shape[0] != 3:
+                raise ValueError(f"(3,) 벡터가 필요합니다. 받은 shape={arr.shape}")
+            Ph = np.append(arr, float(w))
+            return (Ph @ Tmat.T)[:3]
+        elif arr.ndim == 2:
+            if arr.shape[1] != 3:
+                raise ValueError(f"(N,3) 점군이 필요합니다. 받은 shape={arr.shape}")
+            if arr.shape[0] == 0:
+                return np.empty((0, 3), dtype=float)
+            wcol = np.full((arr.shape[0], 1), float(w), dtype=float)
+            Ph = np.hstack([arr, wcol])
+            return (Ph @ Tmat.T)[:, :3]
+        else:
+            raise ValueError(f"(3,) 또는 (N,3) 이어야 합니다. 받은 shape={arr.shape}")
 
     def axis_angle(self, target: str, source: str):
         """T(target <- source) 의 회전 부분에서 회전축과 회전각을 복원한다."""
-        # TODO: 문제 6-4
-        raise NotImplementedError("axis_angle 을 구현하세요")
+        R = np.asarray(self.T(target, source)[:3, :3], dtype=float)
+        return axis_angle_from_matrix(R)
 
 
 def default_chain() -> CoordinateChain:
@@ -132,23 +148,20 @@ def default_chain() -> CoordinateChain:
     지시문은 '임의의 회전·병진'을 쓰라고 하지만, 채점 수치를 맞추기 위해
     아래 값을 그대로 쓰기를 권장한다. (바꾸려면 노트북에도 그 값을 명시할 것)
 
-    base -> link   : z축 30도 회전 후 (0.30, 0.00, 0.40) m 이동
-    link -> camera : y축 -20도, x축 90도 회전(y 먼저 곱함) 후 (0.10, 0.05, 0.15) m 이동
+    base -> link   : z축 22.5도 회전 후 (0.35, 0.05, 0.45) m 이동
+    link -> camera : y축 -22.5도, x축 67.5도 회전(y 먼저 곱함: rot_y @ rot_x) 후 (0.12, 0.04, 0.18) m 이동
     """
     # TODO: 문제 6-1
     #   T_base_link   = make_T(rot_z(...), [...])
     #   T_link_camera = make_T(rot_y(...) @ rot_x(...), [...])
     #   return CoordinateChain("base").add(...).add(...)
     chain = CoordinateChain("base")
-
-    # 1. base -> link : z축 30도 회전 후 (0.30, 0.00, 0.40) m 이동
-    T_base_link = make_T(rot_z(np.deg2rad(30)) , [0.30, 0.00, 0.40])
-    chain.add("link", parent = "base",T_parent_child = T_base_link)
-
-    # 2. link -> camera : y축 -20도, x축 90도 회전 후 (0.10, 0.05, 0.15) m 이동
-    T_link_camera = make_T( rot_x(np.deg2rad(90)) @ rot_y(np.deg2rad(-20)) , [0.10, 0.05, 0.15])
-    chain.add("camera", parent = "link",T_parent_child = T_link_camera)
-
+    # 노트북 6-1 지정값 (채점 수치 일치용):
+    # base->link: z 22.5도 + (0.35, 0.05, 0.45), link->camera: rot_y(-22.5)@rot_x(67.5) + (0.12, 0.04, 0.18)
+    T_base_link = make_T(rot_z(np.deg2rad(22.5)), [0.35, 0.05, 0.45])
+    chain.add("base", "link", T_base_link)
+    T_link_camera = make_T(rot_y(np.deg2rad(-22.5)) @ rot_x(np.deg2rad(67.5)), [0.12, 0.04, 0.18])
+    chain.add("link", "camera", T_link_camera)
     return chain
 
 
@@ -159,15 +172,13 @@ def camera_point_to_base(p_cam, chain: CoordinateChain | None = None) -> np.ndar
     """
 
 
-    # TODO: 문제 6-1
-    pts = np.atleast_1d(p_cam)
-    np.hstack([pts , np.ones((len(pts),1))])
-
-    return p_cam , chain()
-    #raise NotImplementedError("camera_point_to_base 를 구현하세요")
+    if chain is None:
+        chain = default_chain()
+    return chain.transform("base", "camera", p_cam)
 
 
 def base_point_to_camera(p_base, chain: CoordinateChain | None = None) -> np.ndarray:
     """base 기준 좌표 -> 카메라 기준 좌표. 왕복 검증(문제 6-2)에 쓴다."""
-    # TODO: 문제 6-2
-    raise NotImplementedError("base_point_to_camera 를 구현하세요")
+    if chain is None:
+        chain = default_chain()
+    return chain.transform("camera", "base", p_base)

@@ -14,6 +14,8 @@ from src.transform import (
     inv_T,
     least_squares_normal_equation,
     make_T,
+    rmse,
+    to_homogeneous,
     transform_direction,
     transform_point,
     transform_points,
@@ -28,35 +30,62 @@ def T():
 
 
 def test_inv_T_gives_identity(T):
-    # TODO: inv_T(T) @ T 와 T @ inv_T(T) 가 모두 4x4 단위행렬인지 검사
-    raise NotImplementedError("test_inv_T_gives_identity 를 작성하세요")
+    Ti = inv_T(T)
+    assert np.allclose(Ti @ T, np.eye(4))
+    assert np.allclose(T @ Ti, np.eye(4))
 
 
 def test_inv_T_matches_generic_inverse(T):
-    # TODO: inv_T(T) 가 np.linalg.inv(T) 와 일치하는지 검사 (np.linalg 는 검산용)
-    raise NotImplementedError("test_inv_T_matches_generic_inverse 를 작성하세요")
+    assert np.allclose(inv_T(T), np.linalg.inv(T))  # 검산용
+    # 전치 공식 확인
+    R = T[:3, :3]
+    t = T[:3, 3]
+    Ti = inv_T(T)
+    assert np.allclose(Ti[:3, :3], R.T)
+    assert np.allclose(Ti[:3, 3], -R.T @ t)
+    assert np.allclose(Ti[3], [0, 0, 0, 1])
 
 
 def test_point_and_direction_differ(T):
-    # TODO: 같은 벡터를 점(w=1)/방향(w=0)으로 변환하면 결과가 다르고,
-    #       그 차이가 정확히 병진 벡터 T[:3, 3] 이며,
-    #       방향 변환은 길이를 보존하는지 검사
-    raise NotImplementedError("test_point_and_direction_differ 를 작성하세요")
+    v = np.array([1.0, -2.0, 0.5])
+    p_out = transform_point(T, v)
+    d_out = transform_direction(T, v)
+    assert not np.allclose(p_out, d_out)
+    assert np.allclose(p_out - d_out, T[:3, 3])
+    assert np.isclose(np.linalg.norm(d_out), np.linalg.norm(v))
+    assert np.allclose(d_out, T[:3, :3] @ v)
+    assert np.allclose(p_out, T[:3, :3] @ v + T[:3, 3])
 
 
 def test_transform_points_is_vectorized(T):
-    # TODO: (N,3) 점군을 한 번에 변환한 결과가
-    #       transform_point 를 반복문으로 돌린 결과와 같은지 검사
-    raise NotImplementedError("test_transform_points_is_vectorized 를 작성하세요")
+    rng = np.random.default_rng(0)
+    P = rng.standard_normal((10, 3))
+    Pb = transform_points(T, P)
+    ref = np.stack([transform_point(T, q) for q in P])
+    assert Pb.shape == (10, 3)
+    assert np.allclose(Pb, ref)
 
 
 def test_roundtrip_through_inverse(T):
-    # TODO: T 로 보냈다가 inv_T(T) 로 되돌리면 원래 점군이 나오는지 검사
-    raise NotImplementedError("test_roundtrip_through_inverse 를 작성하세요")
+    rng = np.random.default_rng(1)
+    P = rng.standard_normal((15, 3))
+    Pb = transform_points(T, P)
+    Pback = transform_points(inv_T(T), Pb)
+    assert np.allclose(Pback, P)
 
 
 def test_least_squares_matches_lstsq():
-    # TODO: 노이즈를 섞은 과결정 문제를 만들어
-    #       least_squares_normal_equation 의 해가 np.linalg.lstsq 와 일치하고
-    #       잔차가 A 의 열공간에 수직(A^T r = 0)인지 검사
-    raise NotImplementedError("test_least_squares_matches_lstsq 를 작성하세요")
+    rng = np.random.default_rng(42)
+    T_true = make_T(rot_z(0.5) @ rot_x(-0.3), [0.18, -0.42, 0.61])
+    P_cam = rng.uniform(-0.5, 0.5, size=(40, 3))
+    P_base = transform_points(T_true, P_cam) + 2e-3 * rng.standard_normal((40, 3))
+    Ph = to_homogeneous(P_cam, 1.0)
+    A = np.vstack([np.kron(np.eye(3), row.reshape(1, 4)) for row in Ph])
+    b = P_base.reshape(-1)
+    assert A.shape == (120, 12)
+    x_hat, residual = least_squares_normal_equation(A, b)
+    x_ref = np.linalg.lstsq(A, b, rcond=None)[0]  # 비교 대상
+    assert np.allclose(x_hat, x_ref)
+    assert np.allclose(residual, b - A @ x_hat)
+    assert np.allclose(A.T @ residual, 0.0, atol=1e-9)
+    assert 0.2 * 2e-3 < rmse(residual) < 2.0 * 2e-3
