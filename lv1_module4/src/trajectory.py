@@ -26,7 +26,13 @@ def linear_interp(t_wp, q_wp, t) -> np.ndarray:
     위치는 이어지지만 경유점에서 속도가 불연속(꺾임)이다.
     """
     # TODO: 문제 4-1
-    raise NotImplementedError("linear_interp 를 구현하세요")
+    t = np.asarray(t)
+    q_wp = np.asarray(q_wp)
+    
+    if q_wp.ndim == 1:
+        return np.interp(t, t_wp, q_wp)
+    else:
+        return np.array([np.interp(t, t_wp, q_wp[:, i]) for i in range(q_wp.shape[1])]).T
 
 
 def cubic_spline_interp(t_wp, q_wp, t, bc_type: str = "natural") -> np.ndarray:
@@ -35,7 +41,9 @@ def cubic_spline_interp(t_wp, q_wp, t, bc_type: str = "natural") -> np.ndarray:
     bc_type : 양끝 경계 조건. "natural" (양끝 가속도 0) 또는 "clamped" (양끝 속도 0).
     """
     # TODO: 문제 4-1
-    raise NotImplementedError("cubic_spline_interp 를 구현하세요")
+    from scipy.interpolate import CubicSpline
+    cs = CubicSpline(t_wp, q_wp, bc_type=bc_type, axis=0)
+    return cs(t)
 
 
 def quintic_profile(t, t0: float, tf: float, q0, qf,
@@ -57,7 +65,61 @@ def quintic_profile(t, t0: float, tf: float, q0, qf,
     q, qd, qdd : 위치, 속도, 가속도 (해석적 미분. 유한차분이 아니다)
     """
     # TODO: 문제 4-4
-    raise NotImplementedError("quintic_profile 을 구현하세요")
+    t = np.asarray(t)
+    T = tf - t0
+    
+    # 정규화된 시간 tau
+    tau = np.clip((t - t0) / T, 0.0, 1.0)
+    
+    # 경계 속도/가속도가 모두 0인 기본형
+    if v0 == 0.0 and vf == 0.0 and a0 == 0.0 and af == 0.0:
+        s = 10 * tau**3 - 15 * tau**4 + 6 * tau**5
+        ds_dtau = 30 * tau**2 - 60 * tau**3 + 30 * tau**4
+        d2s_dtau2 = 60 * tau - 180 * tau**2 + 120 * tau**3
+        
+        q0_arr = np.asarray(q0)
+        qf_arr = np.asarray(qf)
+        
+        if q0_arr.ndim > 0:
+            s = s[..., np.newaxis]
+            ds_dtau = ds_dtau[..., np.newaxis]
+            d2s_dtau2 = d2s_dtau2[..., np.newaxis]
+            
+        q = q0_arr + (qf_arr - q0_arr) * s
+        qd = (qf_arr - q0_arr) * ds_dtau / T
+        qdd = (qf_arr - q0_arr) * d2s_dtau2 / (T**2)
+        
+        return q, qd, qdd
+    else:
+        q0_arr = np.asarray(q0)
+        qf_arr = np.asarray(qf)
+        
+        c0 = q0_arr
+        c1 = v0 * T
+        c2 = 0.5 * a0 * T**2
+        
+        rhs_1 = qf_arr - (c0 + c1 + c2)
+        rhs_2 = vf * T - (c1 + 2 * c2)
+        rhs_3 = af * T**2 - 2 * c2
+        
+        inv_A = np.array([[20, -8, 1], [-15, 7, -1], [6, -3, 0.5]]) / 2.0
+        
+        c3 = inv_A[0, 0] * rhs_1 + inv_A[0, 1] * rhs_2 + inv_A[0, 2] * rhs_3
+        c4 = inv_A[1, 0] * rhs_1 + inv_A[1, 1] * rhs_2 + inv_A[1, 2] * rhs_3
+        c5 = inv_A[2, 0] * rhs_1 + inv_A[2, 1] * rhs_2 + inv_A[2, 2] * rhs_3
+        
+        if q0_arr.ndim == 0:
+            tau_val = tau
+            q = c0 + c1*tau_val + c2*tau_val**2 + c3*tau_val**3 + c4*tau_val**4 + c5*tau_val**5
+            qd = (c1 + 2*c2*tau_val + 3*c3*tau_val**2 + 4*c4*tau_val**3 + 5*c5*tau_val**4) / T
+            qdd = (2*c2 + 6*c3*tau_val + 12*c4*tau_val**2 + 20*c5*tau_val**3) / (T**2)
+        else:
+            tau_val = tau[..., np.newaxis]
+            q = c0 + c1*tau_val + c2*tau_val**2 + c3*tau_val**3 + c4*tau_val**4 + c5*tau_val**5
+            qd = (c1 + 2*c2*tau_val + 3*c3*tau_val**2 + 4*c4*tau_val**3 + 5*c5*tau_val**4) / T
+            qdd = (2*c2 + 6*c3*tau_val + 12*c4*tau_val**2 + 20*c5*tau_val**3) / (T**2)
+            
+        return q, qd, qdd
 
 
 def finite_diff(y, t) -> np.ndarray:
@@ -67,4 +129,4 @@ def finite_diff(y, t) -> np.ndarray:
     속도 = finite_diff(q, t),  가속도 = finite_diff(속도, t)
     """
     # TODO: 문제 4-2
-    raise NotImplementedError("finite_diff 를 구현하세요")
+    return np.gradient(y, t, axis=0)

@@ -42,14 +42,20 @@ def waypoints(request):
 
 def test_linear_interp_hits_waypoints(waypoints):
     # TODO: linear_interp(t_wp, q_wp, t_wp) == q_wp 인지 검사 (shape 도 확인)
-    raise NotImplementedError("test_linear_interp_hits_waypoints 를 작성하세요")
+    t_wp, q_wp = waypoints
+    q_res = linear_interp(t_wp, q_wp, t_wp)
+    assert q_res.shape == q_wp.shape
+    assert np.allclose(q_res, q_wp, atol=1e-6)
 
 
 # --- 2. 큐빅 스플라인이 경유점을 지나는가 -------------------------------------
 
 def test_cubic_spline_hits_waypoints(waypoints):
     # TODO: cubic_spline_interp(t_wp, q_wp, t_wp) == q_wp 인지 검사 (shape 도 확인)
-    raise NotImplementedError("test_cubic_spline_hits_waypoints 를 작성하세요")
+    t_wp, q_wp = waypoints
+    q_res = cubic_spline_interp(t_wp, q_wp, t_wp)
+    assert q_res.shape == q_wp.shape
+    assert np.allclose(q_res, q_wp, atol=1e-6)
 
 
 # --- 3. 5차 다항식 경계 조건 ---------------------------------------------------
@@ -57,10 +63,24 @@ def test_cubic_spline_hits_waypoints(waypoints):
 def test_quintic_boundary_conditions():
     # TODO: t = linspace(t0, tf, 201) 로 quintic_profile(t, 0.0, 2.0, 0.0, 1.0) 를 평가해
     #       q[0] == 0, q[-1] == 1, qd[0] == qd[-1] == 0, qdd[0] == qdd[-1] == 0 인지 검사
-    raise NotImplementedError("test_quintic_boundary_conditions 를 작성하세요")
+    t = np.linspace(0.0, 2.0, 201)
+    q, qd, qdd = quintic_profile(t, 0.0, 2.0, 0.0, 1.0)
+    
+    assert np.isclose(q[0], 0.0, atol=1e-6)
+    assert np.isclose(q[-1], 1.0, atol=1e-6)
+    assert np.isclose(qd[0], 0.0, atol=1e-6)
+    assert np.isclose(qd[-1], 0.0, atol=1e-6)
+    assert np.isclose(qdd[0], 0.0, atol=1e-6)
+    assert np.isclose(qdd[-1], 0.0, atol=1e-6)
 
 
 # --- 여기부터는 추가 테스트 (권장) -------------------------------------------
+def test_quintic_matches_finite_difference():
+    """해석적 qd 가 finite_diff(q, t) 와 일치한다."""
+    t = np.linspace(0.0, 2.0, 201)
+    q, qd, qdd = quintic_profile(t, 0.0, 2.0, 0.0, 1.0)
+    qd_num = finite_diff(q, t)
+    assert np.allclose(qd, qd_num, atol=1e-2)
 #
 # 예) def test_spline_velocity_is_continuous():
 #         """finite_diff 로 구한 스플라인 속도에는 큰 점프가 없다 (선형 보간과 비교)."""

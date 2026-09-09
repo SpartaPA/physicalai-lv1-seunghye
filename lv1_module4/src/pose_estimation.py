@@ -38,7 +38,27 @@ def pca_axes(P):
     centroid : (3,) 점군 중심
     """
     # TODO: 문제 5-1
-    raise NotImplementedError("pca_axes 를 구현하세요")
+    # 1. centroid = P 의 평균, X = P - centroid
+    centroid = np.mean(P, axis=0)
+    X = P - centroid
+    
+    # 2. C = X^T X / (N - 1) (3x3 공분산)
+    N = len(P)
+    C = (X.T @ X) / (N - 1)
+    
+    # 3. C 를 고유분해 (`np.linalg.eigh`)
+    eigvals, axes = np.linalg.eigh(C)
+    
+    # 4. 고유값 내림차순 정렬
+    idx = np.argsort(eigvals)[::-1]
+    eigvals = eigvals[idx]
+    axes = axes[:, idx]
+    
+    # 5. det(axes) = +1 이 되도록 (오른손 좌표계) 마지막 열 부호 보정
+    if np.linalg.det(axes) < 0:
+        axes[:, -1] *= -1
+
+    return axes, eigvals, centroid
 
 
 def kabsch(P, Q):
@@ -56,7 +76,28 @@ def kabsch(P, Q):
     t : (3,) 병진
     """
     # TODO: 문제 5-3
-    raise NotImplementedError("kabsch 를 구현하세요")
+    # 1. 두 점군의 중심 cP, cQ 구하기
+    cP = P.mean(axis=0)
+    cQ = Q.mean(axis=0)
+    X = P - cP
+    Y = Q - cQ
+    
+    # 2. H = X^T Y (3x3 교차 공분산)
+    H = X.T @ Y
+    
+    # 3. U, S, Vt = svd(H)
+    U, S, Vt = np.linalg.svd(H)
+    V = Vt.T
+    
+    # 4. 반사 방지 보정 (det(V U^T)의 부호 확인)
+    d = np.sign(np.linalg.det(V @ U.T))
+    D = np.diag([1.0, 1.0, d])
+    
+    # 5. R, t 계산
+    R = V @ D @ U.T
+    t = cQ - R @ cP
+
+    return R, t
 
 
 def fit_plane_lstsq(P):
@@ -74,7 +115,26 @@ def fit_plane_lstsq(P):
     residuals : (N,) 각 점의 부호 있는 평면까지의 거리 n . p + d
     """
     # TODO: 문제 5-5
-    raise NotImplementedError("fit_plane_lstsq 를 구현하세요")
+    x, y, z = P[:, 0], P[:, 1], P[:, 2]
+    A = np.column_stack([x, y, np.ones_like(x)])
+    
+    # z = a x + b y + c 최소제곱법 풀이
+    coeffs, _, _, _ = np.linalg.lstsq(A, z, rcond=None)
+    a, b, c = coeffs
+    
+    # 평면 방정식 ax + by - z + c = 0 을 바탕으로 단위 법선 정규화
+    norm = np.sqrt(a**2 + b**2 + 1.0)
+    normal = np.array([a, b, -1.0]) / norm
+    d = c / norm
+    
+    # 법선 방향이 아래를 향하면 위를 향하도록 뒤집기 (+z 방향 정렬)
+    if normal[2] < 0:
+        normal = -normal
+        d = -d
+        
+    residuals = P @ normal + d
+
+    return normal, d, residuals
 
 
 def remove_outliers(P, residuals, k: float = 3.0):
@@ -90,4 +150,12 @@ def remove_outliers(P, residuals, k: float = 3.0):
     mask : (N,) bool — True 가 남긴 점. P 와 대응 점군에 같은 mask 를 적용해야 Kabsch 대응이 유지된다
     """
     # TODO: 문제 5-5
-    raise NotImplementedError("remove_outliers 를 구현하세요")
+    median_res = np.median(residuals)
+    mad = np.median(np.abs(residuals - median_res))
+    sigma = 1.4826 * mad
+    
+    # 기준: 잔차 절댓값이 k * sigma 보다 작은 정상 점만 남김
+    mask = np.abs(residuals) < k * sigma
+    P_clean = P[mask]
+
+    return P_clean, mask
